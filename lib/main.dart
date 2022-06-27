@@ -7,19 +7,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'animan reader',
-      home: Home(key),
+      home: Home(key: key, url: 'https://bbs.animanch.com/'),
     );
   }
 }
 
 class Home extends StatelessWidget {
-  const Home(key) : super(key: key);
+  final String url;
+
+  const Home({Key? key, required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,8 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
-      body: const WebView(
-          initialUrl: 'https://bbs.animanch.com/',
-          javascriptMode: JavascriptMode.unrestricted),
+      body:
+          WebView(initialUrl: url, javascriptMode: JavascriptMode.unrestricted),
     );
   }
 }
