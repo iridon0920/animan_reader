@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:animan_reader/add_thread_log_service.dart';
+import 'package:animan_reader/repository/database_core.dart';
+import 'package:animan_reader/repository/thread_log_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewCore extends StatelessWidget {
@@ -21,12 +23,12 @@ class WebViewCore extends StatelessWidget {
       javascriptChannels: {
         JavascriptChannel(
             name: 'fl_get_html',
-            onMessageReceived: (result) {
-              final document = parse(result.message);
-              final element = document.getElementById('threadTitle');
-              print(element);
-              if (element != null) {
-                print(element.text);
+            onMessageReceived: (result) async {
+              if (url.contains('board')) {
+                final repository =
+                    ThreadLogRepository((await DatabaseCore().database)!);
+                final service = AddThreadLogService(repository);
+                await service.execute(result.message, url);
               }
             }),
       },
