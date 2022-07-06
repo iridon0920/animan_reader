@@ -19,7 +19,7 @@ void main() {
     test("レス数", () {
       final lastResId = doc.getElementById('resList')!.children.last.id;
       final resCount = int.parse(lastResId.substring(3));
-      expect(resCount, 200);
+      expect(resCount, 11);
     });
   });
 }
