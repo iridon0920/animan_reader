@@ -10,6 +10,8 @@ class WebViewCore extends StatelessWidget {
   final String url;
   final _controller = Completer<WebViewController>();
 
+  String currentUrl = '';
+
   WebViewCore({Key? key, required this.url}) : super(key: key);
 
   @override
@@ -24,16 +26,17 @@ class WebViewCore extends StatelessWidget {
         JavascriptChannel(
             name: 'fl_get_html',
             onMessageReceived: (result) async {
-              if (url.contains('board')) {
+              if (currentUrl.contains('board')) {
                 final repository =
                     ThreadLogRepository((await DatabaseCore().database)!);
                 final service = AddThreadLogService(repository);
-                await service.execute(result.message, url);
+                await service.execute(result.message, currentUrl);
               }
             }),
       },
       onPageFinished: (String url) async {
         final controller = await _controller.future;
+        currentUrl = url;
         print('ページ読み込み完了: $url');
 
         controller.runJavascript("""

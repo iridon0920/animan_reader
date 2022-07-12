@@ -20,9 +20,10 @@ class AddThreadLogService {
         url: url,
         title: _findTitle(doc),
         category: _findCategory(doc),
-        thumbnailData: _getThumbnailData(url),
+        thumbnailData: await _getThumbnailData(url),
         resCount: _findResCount(doc),
         viewTime: DateFormat('MM/dd hh:mm').format(DateTime.now()));
+    print(threadLog.toMap().toString());
     await _threadLogRepository.save(threadLog);
   }
 
@@ -36,10 +37,10 @@ class AddThreadLogService {
         breadcrumb.indexOf("『") + 1, breadcrumb.indexOf("』"));
   }
 
-  _getThumbnailData(String url) async {
+  Future<String> _getThumbnailData(String url) async {
     final thumbnailUrl = url.replaceFirst('board', 'thumb_s');
     final res = await get(Uri.parse(thumbnailUrl));
-    return base64.encode(res.bodyBytes);
+    return base64.encode(res.bodyBytes).toString();
   }
 
   _findResCount(Document doc) {

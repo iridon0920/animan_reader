@@ -1,4 +1,4 @@
-import 'package:animan_reader/thread_log.dart';
+import 'package:animan_reader/thread_log_view.dart';
 import 'package:animan_reader/web_view_core.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget {
   final String url;
 
-  Home({Key? key, required this.url}) : super(key: key);
+  const Home({Key? key, required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,11 @@ class Home extends StatelessWidget {
             children: [
               ListTile(
                 title: const Text('スレッド閲覧履歴'),
-                onTap: () {
+                onTap: () async {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ThreadLog()));
+                          builder: (context) => const ThreadLogView()));
                 },
               )
             ],
